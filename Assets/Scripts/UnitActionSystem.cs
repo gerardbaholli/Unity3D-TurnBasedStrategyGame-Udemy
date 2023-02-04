@@ -46,12 +46,13 @@ public class UnitActionSystem : MonoBehaviour
                 return true;
             }
             
-            // This is the same thing:
-            //Unit unit = raycastHit.transform.GetComponent<Unit>();
-            //if (unit != null)
-            //{
-            //    selectedUnit = unit;
-            //}
+            /* This is the same thing:
+            Unit unit = raycastHit.transform.GetComponent<Unit>();
+            if (unit != null)
+            {
+                selectedUnit = unit;
+            }
+            */
         }
         return false;
     }
@@ -61,11 +62,12 @@ public class UnitActionSystem : MonoBehaviour
         selectedUnit = unit;
         OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty); // subject
         
-        // This is the same thing:
-        //if (OnSelectedUnitChange() != null)
-        //{
-        //    OnSelectedUnitChange(this, EventArgs.Empty);
-        //}
+        /* This is the same thing:
+        if (OnSelectedUnitChange() != null)
+        {
+            OnSelectedUnitChange(this, EventArgs.Empty);
+        }
+        */
     }
 
     public Unit GetSelectedUnit()
