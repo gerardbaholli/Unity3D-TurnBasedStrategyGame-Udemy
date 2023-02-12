@@ -131,7 +131,7 @@ Transform:
   - {fileID: 7955172825674548908}
   - {fileID: 6819462614116268498}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &144387030965928498
 BoxCollider:
@@ -179,8 +179,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitAnimator: {fileID: 8008095556668745652}
-  moveSpeed: 4
+  moveSpeed: 5
   rotateSpeed: 10
+  maxMoveDistance: 1
 --- !u!1001 &7959608385086065132
 PrefabInstance:
   m_ObjectHideFlags: 0
