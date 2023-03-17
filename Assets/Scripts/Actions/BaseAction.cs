@@ -18,4 +18,8 @@ public abstract class BaseAction : MonoBehaviour
         unit = GetComponent<Unit>();
     }
 
+    // abstract: subclasses must override this method,
+    // without abstract you must implement this method from here
+    public abstract string GetActionName();
+
 }

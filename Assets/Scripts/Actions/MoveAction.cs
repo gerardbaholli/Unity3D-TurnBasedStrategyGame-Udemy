@@ -9,7 +9,7 @@ public class MoveAction : BaseAction
     [SerializeField] float moveSpeed = 4f;
     [SerializeField] float rotateSpeed = 10f;
 
-    [SerializeField] int maxMoveDistance = 4; 
+    [SerializeField] int maxMoveDistance = 4;
 
     private Vector3 targetPosition;
     private float stoppingDistance = .1f;
@@ -22,7 +22,8 @@ public class MoveAction : BaseAction
 
     private void Update()
     {
-        if (!isActive) {
+        if (!isActive)
+        {
             return;
         }
 
@@ -93,4 +94,8 @@ public class MoveAction : BaseAction
         return validGridPositionList;
     }
 
+    public override string GetActionName()
+    {
+        return "Move";
+    }
 }
