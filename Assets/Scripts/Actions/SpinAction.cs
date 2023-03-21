@@ -30,7 +30,19 @@ public class SpinAction : BaseAction
         }
     }
 
-    public void Spin(Action onActionComplete)
+    /* Another way to implement this without having useless parameters, is this:
+     * 
+     * public class BaseParameters { }
+     * public class SpinBaseParameters : BaseParameters { }
+     * 
+     * public override void TakeAction(BaseParameters baseParameters, Action onActionComplete)
+     * {
+     *      SpinBaseParameters spinBaseParameters = (SpinBaseParameters) baseParameters;
+     *      ...
+     * }
+     */
+
+    public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
         this.onActionComplete = onActionComplete;
         totalSpinAmount = 0f;
@@ -40,5 +52,12 @@ public class SpinAction : BaseAction
     public override string GetActionName()
     {
         return "Spin";
+    }
+
+    public override List<GridPosition> GetValidActionGridPositionList()
+    {
+        GridPosition unitGridPosition = unit.GetGridPosition();
+
+        return new List<GridPosition> { unitGridPosition };
     }
 }
