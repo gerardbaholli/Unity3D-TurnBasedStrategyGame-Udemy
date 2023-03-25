@@ -35,4 +35,8 @@ public abstract class BaseAction : MonoBehaviour
     // abstract: to enforce other classes to implement this method
     public abstract List<GridPosition> GetValidActionGridPositionList();
 
+    public virtual int GetActionPointsCost()
+    {
+        return 1;
+    }
 }
