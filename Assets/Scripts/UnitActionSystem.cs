@@ -43,6 +43,11 @@ public class UnitActionSystem : MonoBehaviour
             return;
         }
 
+        if (!TurnSystem.Instance.IsPlayerTurn())
+        {
+            return;
+        }
+
         // This prevent to computate the mouse click if it is over a button of the canvas
         if (EventSystem.current.IsPointerOverGameObject())
         {
@@ -126,6 +131,12 @@ public class UnitActionSystem : MonoBehaviour
                     if (unit == selectedUnit)
                     {
                         // This unit is already selected
+                        return false;
+                    }
+
+                    if (unit.IsEnemy())
+                    {
+                        // Clicked on an Enemy
                         return false;
                     }
 
