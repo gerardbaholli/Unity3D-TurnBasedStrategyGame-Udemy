@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class MoveAction : BaseAction
 {
+
+    public event EventHandler OnStartMoving;
+    public event EventHandler OnStopMoving;
+
     [SerializeField] Animator unitAnimator;
     [SerializeField] float moveSpeed = 4f;
     [SerializeField] int maxMoveDistance = 4;
@@ -30,11 +34,10 @@ public class MoveAction : BaseAction
         if (Vector3.Distance(transform.position, targetPosition) > stoppingDistance)
         {
             transform.position += moveDirection * moveSpeed * Time.deltaTime;
-            unitAnimator.SetBool("IsWalking", true);
         }
         else
         {
-            unitAnimator.SetBool("IsWalking", false);
+            OnStopMoving?.Invoke(this, EventArgs.Empty);
             ActionComplete();
         }
 
@@ -47,6 +50,8 @@ public class MoveAction : BaseAction
         ActionStart(onActionComplete);
 
         this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+
+        OnStartMoving?.Invoke(this, EventArgs.Empty);
     }
 
     /*

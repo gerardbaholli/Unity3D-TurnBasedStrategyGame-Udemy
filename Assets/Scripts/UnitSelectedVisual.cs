@@ -11,7 +11,7 @@ public class UnitSelectedVisual : MonoBehaviour
 
     private void Awake()
     {
-        meshRenderer= GetComponent<MeshRenderer>();
+        meshRenderer = GetComponent<MeshRenderer>();
     }
 
     private void Start()
@@ -36,4 +36,10 @@ public class UnitSelectedVisual : MonoBehaviour
             meshRenderer.enabled = false;
         }
     }
+
+    private void OnDestroy()
+    {
+        UnitActionSystem.Instance.OnSelectedUnitChanged -= UnitActionSystem_OnSelectedUnitChanged;
+    }
+
 }

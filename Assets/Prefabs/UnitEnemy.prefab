@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5385951708760767523, guid: 619d022c40071e244bbbde2e110a1f0e,
+        type: 3}
+      propertyPath: health
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7959608386924226656, guid: 619d022c40071e244bbbde2e110a1f0e,
         type: 3}
       propertyPath: m_Name
@@ -36,7 +41,7 @@ PrefabInstance:
     - target: {fileID: 7959608386924226671, guid: 619d022c40071e244bbbde2e110a1f0e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7959608386924226671, guid: 619d022c40071e244bbbde2e110a1f0e,
         type: 3}
@@ -78,6 +83,12 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c70e075a2144ba04784d74b7b2889fd3, type: 2}
+    - target: {fileID: 8873179532843019037, guid: 619d022c40071e244bbbde2e110a1f0e,
+        type: 3}
+      propertyPath: ragdollPrefab
+      value: 
+      objectReference: {fileID: 950238864573612898, guid: 232ca54db7abe4f0f8a2909a751acb21,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
