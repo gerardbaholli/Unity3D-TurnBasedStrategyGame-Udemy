@@ -5,28 +5,41 @@ using UnityEngine;
 
 public class LevelGrid : MonoBehaviour
 {
+
     public static LevelGrid Instance { get; private set; }
 
-    public event EventHandler OnAnyUnitMoveGridPosition;
+
+    public event EventHandler OnAnyUnitMovedGridPosition;
+
 
     [SerializeField] private Transform gridDebugObjectPrefab;
+    [SerializeField] private int width;
+    [SerializeField] private int height;
+    [SerializeField] private float cellSize;
 
     private GridSystem<GridObject> gridSystem;
+
 
     private void Awake()
     {
         if (Instance != null)
         {
-            Debug.LogError("There's more than one UnitActionSystem! " + transform + " - " + Instance);
+            Debug.LogError("There's more than one LevelGrid! " + transform + " - " + Instance);
             Destroy(gameObject);
             return;
         }
         Instance = this;
 
-        gridSystem = new GridSystem<GridObject>(10, 10, 2f,
-            (GridSystem<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
-        gridSystem.CreateDebugObjects(gridDebugObjectPrefab);
+        gridSystem = new GridSystem<GridObject>(width, height, cellSize,
+                (GridSystem<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
+        //gridSystem.CreateDebugObjects(gridDebugObjectPrefab);
     }
+
+    private void Start()
+    {
+        Pathfinding.Instance.Setup(width, height, cellSize);
+    }
+
 
     public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)
     {
@@ -49,19 +62,13 @@ public class LevelGrid : MonoBehaviour
     public void UnitMovedGridPosition(Unit unit, GridPosition fromGridPosition, GridPosition toGridPosition)
     {
         RemoveUnitAtGridPosition(fromGridPosition, unit);
+
         AddUnitAtGridPosition(toGridPosition, unit);
 
-        OnAnyUnitMoveGridPosition?.Invoke(this, EventArgs.Empty);
+        OnAnyUnitMovedGridPosition?.Invoke(this, EventArgs.Empty);
     }
 
     public GridPosition GetGridPosition(Vector3 worldPosition) => gridSystem.GetGridPosition(worldPosition);
-
-    /* This is the same thing:
-    public GridPosition GetGridPosition(Vector3 worldPosition)
-    {
-        return gridSystem.GetGridPosition(worldPosition);
-    }
-    */
 
     public Vector3 GetWorldPosition(GridPosition gridPosition) => gridSystem.GetWorldPosition(gridPosition);
 
