@@ -14,21 +14,29 @@ public class Unit : MonoBehaviour
      * event that exist for multiple things, let it start whit "OnAny"
      */
     public static event EventHandler OnAnyActionPointsChanged;
+    public static event EventHandler OnAnyUnitSpawned;
+    public static event EventHandler OnAnyUnitDead;
 
     [SerializeField] private bool isEnemy;
 
     private GridPosition gridPosition;
     private HealthSystem healthSystem;
+    /* Refactored with C# Generics
     private MoveAction moveAction;
+    private ShootAction shootAction;
     private SpinAction spinAction;
+    */
     private BaseAction[] baseActionArray;
     private int actionPoints = ACTION_POINTS_MAX;
 
     private void Awake()
     {
         healthSystem = GetComponent<HealthSystem>();
+        /* Refactored with C# Generics
         moveAction = GetComponent<MoveAction>();
+        shootAction = GetComponent<ShootAction>();
         spinAction = GetComponent<SpinAction>();
+        */
         baseActionArray = GetComponents<BaseAction>();
     }
 
@@ -39,6 +47,8 @@ public class Unit : MonoBehaviour
 
         gridPosition = LevelGrid.Instance.GetGridPosition(this.transform.position);
         LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
+
+        OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update()
@@ -47,20 +57,40 @@ public class Unit : MonoBehaviour
         if (newGridPosition != gridPosition)
         {
             // Unit changed GridPosition
-            LevelGrid.Instance.UnitMovedGridPosition(this, gridPosition, newGridPosition);
+            GridPosition oldGridPosition = gridPosition;
             gridPosition = newGridPosition;
+            LevelGrid.Instance.UnitMovedGridPosition(this, oldGridPosition, newGridPosition);
         }
     }
 
+    public T GetAction<T>() where T : BaseAction
+    {
+        foreach (BaseAction baseAction in baseActionArray)
+        {
+            if (baseAction is T)
+            {
+                return (T)baseAction;
+            }
+        }
+        return null;
+    }
+
+    /* Refactored with C# Generics
     public MoveAction GetMoveAction()
     {
         return moveAction;
+    }
+
+    public ShootAction GetShootAction()
+    {
+        return shootAction;
     }
 
     public SpinAction GetSpinAction()
     {
         return spinAction;
     }
+    */
 
     public GridPosition GetGridPosition()
     {
@@ -121,6 +151,7 @@ public class Unit : MonoBehaviour
     {
         LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
         Destroy(gameObject);
+        OnAnyUnitDead?.Invoke(this, EventArgs.Empty);
     }
 
     public bool IsEnemy()
@@ -131,6 +162,11 @@ public class Unit : MonoBehaviour
     public void Damage(int damageAmount)
     {
         healthSystem.Damage(damageAmount);
+    }
+
+    public float GetHealthNormalized()
+    {
+        return healthSystem.GetHealthNormalized();
     }
 
 }
