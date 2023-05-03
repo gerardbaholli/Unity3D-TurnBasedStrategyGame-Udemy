@@ -691,8 +691,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ca5dda3bd2844508a95c45c8f41704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitAnimator: {fileID: 8008095556668745652}
-  moveSpeed: 5
   maxMoveDistance: 4
 --- !u!114 &7080519084352883786
 MonoBehaviour:
@@ -718,6 +716,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e6b3933e937b4a67b583831d67b5672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obstaclesLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1353858810228050468
 MonoBehaviour:
   m_ObjectHideFlags: 0

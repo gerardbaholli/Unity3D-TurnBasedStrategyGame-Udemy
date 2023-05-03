@@ -6,7 +6,6 @@ using UnityEngine;
 public class ShootAction : BaseAction
 {
 
-    //public event EventHandler<Unit> OnShoot;
     public event EventHandler<OnShootEventArgs> OnShoot;
 
     public class OnShootEventArgs : EventArgs
@@ -15,16 +14,20 @@ public class ShootAction : BaseAction
         public Unit shootingUnit;
     }
 
+
+
     private enum State
     {
         Aiming,
         Shooting,
-        Cooloff
-    };
+        Cooloff,
+    }
+
+    [SerializeField] private LayerMask obstaclesLayerMask;
 
     private State state;
-    private float stateTimer;
     private int maxShootDistance = 7;
+    private float stateTimer;
     private Unit targetUnit;
     private bool canShootBullet;
 
@@ -37,12 +40,14 @@ public class ShootAction : BaseAction
         }
 
         stateTimer -= Time.deltaTime;
+
         switch (state)
         {
             case State.Aiming:
-                Vector3 aimDirection = (targetUnit.GetWorldPosition() - unit.GetWorldPosition()).normalized;
+                Vector3 aimDir = (targetUnit.GetWorldPosition() - unit.GetWorldPosition()).normalized;
+
                 float rotateSpeed = 10f;
-                transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * rotateSpeed);
+                transform.forward = Vector3.Lerp(transform.forward, aimDir, Time.deltaTime * rotateSpeed);
                 break;
             case State.Shooting:
                 if (canShootBullet)
@@ -59,7 +64,6 @@ public class ShootAction : BaseAction
         {
             NextState();
         }
-
     }
 
     private void NextState()
@@ -73,8 +77,8 @@ public class ShootAction : BaseAction
                 break;
             case State.Shooting:
                 state = State.Cooloff;
-                float cooloffStateTime = 0.5f;
-                stateTimer = cooloffStateTime;
+                float coolOffStateTime = 0.5f;
+                stateTimer = coolOffStateTime;
                 break;
             case State.Cooloff:
                 ActionComplete();
@@ -89,8 +93,11 @@ public class ShootAction : BaseAction
             targetUnit = targetUnit,
             shootingUnit = unit
         });
+
         targetUnit.Damage(40);
     }
+
+
 
     public override string GetActionName()
     {
@@ -122,13 +129,12 @@ public class ShootAction : BaseAction
                 int testDistance = Mathf.Abs(x) + Mathf.Abs(z);
                 if (testDistance > maxShootDistance)
                 {
-                    // Out of the circle range
                     continue;
                 }
 
                 if (!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
                 {
-                    // Grid Position is empty, no unit
+                    // Grid Position is empty, no Unit
                     continue;
                 }
 
@@ -136,7 +142,21 @@ public class ShootAction : BaseAction
 
                 if (targetUnit.IsEnemy() == unit.IsEnemy())
                 {
-                    // Both Unit on the same team
+                    // Both Units on same 'team'
+                    continue;
+                }
+
+                Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
+                Vector3 shootDir = (targetUnit.GetWorldPosition() - unitWorldPosition).normalized;
+
+                float unitShoulderHeight = 1.7f;
+                if (Physics.Raycast(
+                        unitWorldPosition + Vector3.up * unitShoulderHeight,
+                        shootDir,
+                        Vector3.Distance(unitWorldPosition, targetUnit.GetWorldPosition()),
+                        obstaclesLayerMask))
+                {
+                    // Blocked by an Obstacle
                     continue;
                 }
 
@@ -152,8 +172,8 @@ public class ShootAction : BaseAction
         targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
 
         state = State.Aiming;
-        float shootingStateTime = 1f;
-        stateTimer = shootingStateTime;
+        float aimingStateTime = 1f;
+        stateTimer = aimingStateTime;
 
         canShootBullet = true;
 
@@ -177,7 +197,7 @@ public class ShootAction : BaseAction
         return new EnemyAIAction
         {
             gridPosition = gridPosition,
-            actionValue = 100 + Mathf.RoundToInt((1 - targetUnit.GetHealthNormalized()) * 100f)
+            actionValue = 100 + Mathf.RoundToInt((1 - targetUnit.GetHealthNormalized()) * 100f),
         };
     }
 
