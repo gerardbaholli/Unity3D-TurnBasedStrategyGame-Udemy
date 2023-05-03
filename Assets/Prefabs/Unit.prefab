@@ -620,6 +620,7 @@ GameObject:
   - component: {fileID: 1353858810228050468}
   - component: {fileID: 5385951708760767523}
   - component: {fileID: 8873179532843019037}
+  - component: {fileID: 298803167030966190}
   m_Layer: 7
   m_Name: Unit
   m_TagString: Untagged
@@ -643,7 +644,7 @@ Transform:
   - {fileID: 6819462614116268498}
   - {fileID: 719401732636675637}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &144387030965928498
 BoxCollider:
@@ -763,6 +764,20 @@ MonoBehaviour:
   ragdollPrefab: {fileID: 7959608386924226671, guid: aa679bf9a093c43638fd0a8a901888d5,
     type: 3}
   originalRootBone: {fileID: 7955487228178944694}
+--- !u!114 &298803167030966190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7959608386924226656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5110ab44baf37419c88913e04e49f33d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grenadeProjectilePrefab: {fileID: 4112950881084135824, guid: 3c281d97feb4b4a7ea6a5ddce5b10125,
+    type: 3}
 --- !u!1001 &7959608385086065132
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -72,7 +72,7 @@ public abstract class BaseAction : MonoBehaviour
 
         foreach (GridPosition gridPosition in validActionGridPositionList)
         {
-            EnemyAIAction enemyAIAction = GetBestEnemyAIAction(gridPosition);
+            EnemyAIAction enemyAIAction = GetEnemyAIAction(gridPosition);
             enemyAIActionList.Add(enemyAIAction);
         }
 
@@ -89,6 +89,6 @@ public abstract class BaseAction : MonoBehaviour
 
     }
 
-    public abstract EnemyAIAction GetBestEnemyAIAction(GridPosition gridPosition);
+    public abstract EnemyAIAction GetEnemyAIAction(GridPosition gridPosition);
 
 }

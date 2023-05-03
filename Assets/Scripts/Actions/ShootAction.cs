@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ShootAction : BaseAction
 {
-
+    public static event EventHandler<OnShootEventArgs> OnAnyShoot;
     public event EventHandler<OnShootEventArgs> OnShoot;
 
     public class OnShootEventArgs : EventArgs
@@ -13,8 +13,6 @@ public class ShootAction : BaseAction
         public Unit targetUnit;
         public Unit shootingUnit;
     }
-
-
 
     private enum State
     {
@@ -88,6 +86,12 @@ public class ShootAction : BaseAction
 
     private void Shoot()
     {
+        OnAnyShoot?.Invoke(this, new OnShootEventArgs
+        {
+            targetUnit = targetUnit,
+            shootingUnit = unit
+        });
+
         OnShoot?.Invoke(this, new OnShootEventArgs
         {
             targetUnit = targetUnit,
@@ -190,7 +194,7 @@ public class ShootAction : BaseAction
         return maxShootDistance;
     }
 
-    public override EnemyAIAction GetBestEnemyAIAction(GridPosition gridPosition)
+    public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition)
     {
         Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
 
