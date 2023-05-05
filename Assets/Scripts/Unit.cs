@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    private const int ACTION_POINTS_MAX = 2;
+    private const int ACTION_POINTS_MAX = 9;
 
     /* 
      * static here means that this event will exist for the entire class
@@ -102,7 +102,7 @@ public class Unit : MonoBehaviour
         return transform.position;
     }
 
-    public BaseAction[] GetBaseActionsArray()
+    public BaseAction[] GetBaseActionArray()
     {
         return baseActionArray;
     }

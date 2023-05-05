@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
@@ -11,12 +10,11 @@ public class EnemyAI : MonoBehaviour
     {
         WaitingForEnemyTurn,
         TakingTurn,
-        Busy
+        Busy,
     }
 
     private State state;
     private float timer;
-
 
     private void Awake()
     {
@@ -41,7 +39,7 @@ public class EnemyAI : MonoBehaviour
                 break;
             case State.TakingTurn:
                 timer -= Time.deltaTime;
-                if (timer < 0f)
+                if (timer <= 0f)
                 {
                     if (TryTakeEnemyAIAction(SetStateTakingTurn))
                     {
@@ -57,12 +55,11 @@ public class EnemyAI : MonoBehaviour
             case State.Busy:
                 break;
         }
-
     }
 
     private void SetStateTakingTurn()
     {
-        timer = .5f;
+        timer = 0.5f;
         state = State.TakingTurn;
     }
 
@@ -84,6 +81,7 @@ public class EnemyAI : MonoBehaviour
                 return true;
             }
         }
+
         return false;
     }
 
@@ -92,7 +90,7 @@ public class EnemyAI : MonoBehaviour
         EnemyAIAction bestEnemyAIAction = null;
         BaseAction bestBaseAction = null;
 
-        foreach (BaseAction baseAction in enemyUnit.GetBaseActionsArray())
+        foreach (BaseAction baseAction in enemyUnit.GetBaseActionArray())
         {
             if (!enemyUnit.CanSpendActionPointsToTakeAction(baseAction))
             {
@@ -107,15 +105,14 @@ public class EnemyAI : MonoBehaviour
             }
             else
             {
-                EnemyAIAction tempEnemyAIAction = baseAction.GetBestEnemyAIAction();
-                if (tempEnemyAIAction != null && tempEnemyAIAction.actionValue > bestEnemyAIAction.actionValue)
+                EnemyAIAction testEnemyAIAction = baseAction.GetBestEnemyAIAction();
+                if (testEnemyAIAction != null && testEnemyAIAction.actionValue > bestEnemyAIAction.actionValue)
                 {
-                    bestEnemyAIAction = tempEnemyAIAction;
+                    bestEnemyAIAction = testEnemyAIAction;
                     bestBaseAction = baseAction;
                 }
             }
 
-            bestEnemyAIAction = baseAction.GetBestEnemyAIAction();
         }
 
         if (bestEnemyAIAction != null && enemyUnit.TrySpendActionPointsToTakeAction(bestBaseAction))
@@ -127,7 +124,6 @@ public class EnemyAI : MonoBehaviour
         {
             return false;
         }
-
     }
 
 }
